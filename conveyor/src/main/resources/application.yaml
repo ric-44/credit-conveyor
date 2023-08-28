@@ -1,2 +1,5 @@
 server:
   port: 8010
+
+app:
+  base-rate: ${APP_BASERATE:18}

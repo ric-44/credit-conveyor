@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.ashabelskii.conveyor.dto.CreditDto;
-import ru.ashabelskii.conveyor.dto.LoanApplicationRequestDto;
-import ru.ashabelskii.conveyor.dto.LoanOfferDto;
-import ru.ashabelskii.conveyor.dto.ScoringDataDto;
+import ru.ashabelskii.conveyor.dto.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -40,6 +37,8 @@ public interface ConveyorApi {
     @ApiResponse(responseCode = "200", description = "OK",
             content = @Content(schema = @Schema(implementation = CreditDto.class)))
     @ApiResponse(responseCode = "400", description = "Некорректный запрос", content = @Content)
+    @ApiResponse(responseCode = "409", description = "Ошибка скоринга",
+            content = @Content(schema = @Schema(implementation = ScoringErrorResponse.class)))
     @ApiResponse(responseCode = "500", description = "Ошибка", content = @Content)
     ResponseEntity<CreditDto> calculateCredit(@Parameter(description = "Тело запроса", required = true)
                                               @RequestBody @Valid ScoringDataDto scoringDataDto,
