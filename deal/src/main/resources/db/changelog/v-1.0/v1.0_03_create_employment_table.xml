@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="v1.0_03_create_employment_table" author="ashabelskii">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="employment"/>
+            </not>
+        </preConditions>
+
+        <comment>Create employment table</comment>
+        <createTable tableName="employment">
+            <column name="id" type="UUID" remarks="Идентификатор">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status" type="VARCHAR(255)" remarks="Статус">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employer_inn" type="VARCHAR(255)" remarks="ИНН работодателя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salary" type="DECIMAL" remarks="Заработная плата">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="VARCHAR(255)" remarks="Позиция">
+                <constraints nullable="false"/>
+            </column>
+            <column name="work_experience_current" type="INTEGER" remarks="Текущий стаж работы">
+                <constraints nullable="false"/>
+            </column>
+            <column name="work_experience_total" type="INTEGER" remarks="Общий стаж работы">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

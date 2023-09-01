@@ -1,2 +1,35 @@
 server:
   port: 8011
+
+spring:
+  application:
+    name: deal
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  datasource:
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+  liquibase:
+    database-change-log-lock-table: DEAL_DATABASECHANGELOGLOCK
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+logbook:
+  exclude:
+    - /actuator/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+
+integration:
+  conveyor:
+    client:
+      url: ${INTEGRATION_CONVEYOR_CLIENT_URL}
+      connect-timeout: 300
+      read-timeout: 300
+      write-timeout: 300

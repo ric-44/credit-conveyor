@@ -9,6 +9,7 @@ import ru.ashabelskii.deal.api.DealApi;
 import ru.ashabelskii.deal.dto.FinishRegistrationRequestDto;
 import ru.ashabelskii.deal.dto.LoanApplicationRequestDto;
 import ru.ashabelskii.deal.dto.LoanOfferDto;
+import ru.ashabelskii.deal.service.DealService;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,22 +18,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DealController implements DealApi {
 
+    private final DealService dealService;
 
     @Override
     public ResponseEntity<List<LoanOfferDto>> createApplication(LoanApplicationRequestDto loanApplicationRequestDto,
                                                                 HttpHeaders headers) {
-        throw new NotImplementedException();
+        List<LoanOfferDto> application = dealService.createApplication(loanApplicationRequestDto);
+        return ResponseEntity.ok(application);
     }
 
     @Override
     public ResponseEntity<Void> applyOffer(LoanOfferDto loanOfferDto, HttpHeaders headers) {
-        throw new NotImplementedException();
+        dealService.applyOffer(loanOfferDto);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> calculateCredit(UUID applicationId,
                                                 FinishRegistrationRequestDto finishRegistrationRequestDto,
                                                 HttpHeaders headers) {
-        throw new NotImplementedException();
+        dealService.calculateCredit(applicationId, finishRegistrationRequestDto);
+        return ResponseEntity.ok().build();
     }
 }

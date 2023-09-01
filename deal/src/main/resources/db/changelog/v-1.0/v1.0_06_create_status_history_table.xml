@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="v1.0_06_create_status_history_table" author="ashabelskii">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="status_history"/>
+            </not>
+            <tableExists tableName="application"/>
+        </preConditions>
+
+        <comment>Create status_history table</comment>
+        <createTable tableName="status_history">
+            <column name="id" type="UUID" remarks="Идентификатор">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="application_id" type="UUID" remarks="Идентификатор заявки">
+                <constraints foreignKeyName="status_history_application_fk" references="application" nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)" remarks="Статус">
+                <constraints nullable="false"/>
+            </column>
+            <column name="change_type" type="VARCHAR(255)" remarks="Тип изменения">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE" remarks="Дата и время обновления статуса">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

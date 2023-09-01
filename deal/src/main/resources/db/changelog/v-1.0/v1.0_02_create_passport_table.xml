@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="v1.0_02_create_passport_table" author="ashabelskii">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="passport"/>
+            </not>
+        </preConditions>
+
+        <comment>Create passport table</comment>
+        <createTable tableName="passport">
+            <column name="id" type="UUID" remarks="Идентификатор">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="series" type="VARCHAR(255)" remarks="Серия">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(255)" remarks="Номер">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issue_branch" type="TEXT" remarks="Место выдачи"/>
+            <column name="issue_date" type="DATE" remarks="Дата выдачи"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

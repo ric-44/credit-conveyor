@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="v1.0_04_create_client_table" author="ashabelskii">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+            <tableExists tableName="passport"/>
+            <tableExists tableName="employment"/>
+        </preConditions>
+
+        <comment>Create client table</comment>
+        <createTable tableName="client">
+            <column name="id" type="UUID" remarks="Идентификатор">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)" remarks="Имя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)" remarks="Фамилия">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(255)" remarks="Отчество"/>
+            <column name="email" type="VARCHAR(255)" remarks="Электронная почта"/>
+            <column name="gender" type="VARCHAR(255)" remarks="Пол"/>
+            <column name="birthdate" type="DATE" remarks="Дата рождения"/>
+            <column name="marital_status" type="VARCHAR(255)" remarks="Семейное положение"/>
+            <column name="dependent_amount" type="INTEGER" remarks="Количество иждивенцев"/>
+            <column name="passport_id" type="UUID" remarks="Идентификатор паспорта">
+                <constraints foreignKeyName="client_passport_fk" references="passport"/>
+            </column>
+            <column name="employment_id" type="UUID" remarks="Идентификатор работника">
+                <constraints foreignKeyName="client_employment_fk" references="employment"/>
+            </column>
+            <column name="account_number" type="VARCHAR(255)" remarks="Номер счёта"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

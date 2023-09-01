@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/deal
+    password: postgres
+    username: postgres
+
+integration:
+  conveyor:
+    client:
+      url: http://localhost:8010

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="v1.0_01_create_credit_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_02_create_passport_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_03_create_employment_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_04_create_client_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_05_create_application_table.xml" relativeToChangelogFile="true"/>
+    <include file="v1.0_06_create_status_history_table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
