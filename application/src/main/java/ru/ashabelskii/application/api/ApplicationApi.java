@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.ashabelskii.application.dto.PreScoringErrorResponse;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,6 +26,8 @@ public interface ApplicationApi {
     @ApiResponse(responseCode = "200", description = "OK",
             content = @Content(schema = @Schema(implementation = LoanOfferDto.class)))
     @ApiResponse(responseCode = "400", description = "Некорректный запрос", content = @Content)
+    @ApiResponse(responseCode = "409", description = "Ошибка скоринга",
+            content = @Content(schema = @Schema(implementation = PreScoringErrorResponse.class)))
     @ApiResponse(responseCode = "500", description = "Ошибка", content = @Content)
     ResponseEntity<List<LoanOfferDto>> createApplication(@Parameter(description = "Тело запроса", required = true)
                                                          @RequestBody @Valid LoanApplicationRequestDto loanApplicationRequestDto,
