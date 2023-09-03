@@ -33,3 +33,12 @@ integration:
       connect-timeout: 300
       read-timeout: 300
       write-timeout: 300
+  dossier:
+    bootstrap-servers: ${INTEGRATION_DOSSIER_BOOTSTRAPSERVERS}
+    topic:
+      finish-registration: 'conveyor-finish-registration'
+      create-document: 'conveyor-create-documents'
+      send-document: 'conveyor-send-documents'
+      send-ses: 'conveyor-send-ses'
+      credit-issued: 'conveyor-credit-issued'
+      application-denied: 'conveyor-application-denied'

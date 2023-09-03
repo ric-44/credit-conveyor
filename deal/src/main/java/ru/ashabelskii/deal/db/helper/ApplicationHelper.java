@@ -29,10 +29,14 @@ public class ApplicationHelper {
         return applicationRepository.save(application);
     }
 
-    private void updateStatus(Application application, ApplicationStatus status, ChangeType changeType) {
+    public void updateStatus(Application application, ApplicationStatus status, ChangeType changeType) {
         StatusHistory history = createStatusHistory(status, changeType);
         application.setStatus(status);
         application.addHistory(history);
+    }
+
+    public boolean checkStatus(Application application, ApplicationStatus applicationStatus) {
+        return application.getStatus().equals(applicationStatus);
     }
 
     private static StatusHistory createStatusHistory(ApplicationStatus status, ChangeType changeType) {

@@ -6,14 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ashabelskii.deal.db.entity.Application;
 import ru.ashabelskii.deal.db.entity.Client;
 import ru.ashabelskii.deal.db.entity.Credit;
-import ru.ashabelskii.deal.db.enums.ApplicationStatus;
 import ru.ashabelskii.deal.db.enums.CreditStatus;
 import ru.ashabelskii.deal.db.helper.ApplicationHelper;
-import ru.ashabelskii.deal.dto.FinishRegistrationRequestDto;
-import ru.ashabelskii.deal.dto.LoanApplicationRequestDto;
-import ru.ashabelskii.deal.dto.LoanOfferDto;
+import ru.ashabelskii.deal.dto.*;
 import ru.ashabelskii.deal.exception.AppException;
 import ru.ashabelskii.deal.integration.conveyor.ConveyorService;
+import ru.ashabelskii.deal.integration.dossier.DossierService;
 import ru.ashabelskii.deal.mapper.DealMapper;
 import ru.ashabelskii.deal.model.LoanOffer;
 
@@ -30,8 +28,10 @@ public class DealService {
 
     private final ApplicationHelper applicationHelper;
     private final DealMapper dealMapper;
+    private final EmailService emailService;
 
     private final ConveyorService conveyorService;
+    private final DossierService dossierService;
 
     @Transactional
     public List<LoanOfferDto> createApplication(LoanApplicationRequestDto loanApplicationRequestDto) {
@@ -47,16 +47,25 @@ public class DealService {
     @Transactional
     public void applyOffer(LoanOfferDto loanOfferDto) {
         Application application = applicationHelper.getById(loanOfferDto.applicationId());
-        checkStatus(application, PREAPPROVAL);
+        if (!applicationHelper.checkStatus(application, PREAPPROVAL)) {
+            throw new AppException("Application with id = " + application.getId() + " has the status "
+                    + application.getStatus());
+        }
         LoanOffer loanOffer = dealMapper.mapLoanOffer(loanOfferDto);
         application.setAppliedOffer(loanOffer);
         applicationHelper.saveAndUpdateStatus(application, APPROVED, MANUAL);
+
+        EmailMessage emailMessage = emailService.createEmailMessage(application, Theme.FINISH_REGISTRATION);
+        dossierService.sendMessage(emailMessage);
     }
 
     @Transactional
     public void calculateCredit(UUID applicationId, FinishRegistrationRequestDto finishRegistrationRequestDto) {
         Application application = applicationHelper.getById(applicationId);
-        checkStatus(application, APPROVED);
+        if (!applicationHelper.checkStatus(application, APPROVED)) {
+            throw new AppException("Application with id = " + application.getId() + " has the status "
+                    + application.getStatus());
+        }
         dealMapper.mapFinishClientInfo(application.getClient(), finishRegistrationRequestDto);
 
         Credit credit = conveyorService.calculateCredit(application);
@@ -64,18 +73,14 @@ public class DealService {
         application.setCredit(credit);
 
         applicationHelper.saveAndUpdateStatus(application, CC_APPROVED, AUTOMATIC);
+
+        EmailMessage emailMessage = emailService.createEmailMessage(application, Theme.CREATE_DOCUMENT);
+        dossierService.sendMessage(emailMessage);
     }
 
     private static Application initApplication(Client client) {
         Application application = new Application();
         application.setClient(client);
         return application;
-    }
-
-    private static void checkStatus(Application application, ApplicationStatus applicationStatus) {
-        if (!application.getStatus().equals(applicationStatus)) {
-            throw new AppException("Application with id = " + application.getId() + " has the status "
-                    + application.getStatus());
-        }
     }
 }

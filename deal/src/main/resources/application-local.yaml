@@ -8,3 +8,5 @@ integration:
   conveyor:
     client:
       url: http://localhost:8010
+  dossier:
+    bootstrap-servers: localhost:9092
