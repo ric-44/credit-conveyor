@@ -7,7 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SpringBootApplication
 @ConfigurationPropertiesScan({
         "ru.ashabelskii.dossier.kafka.config",
-        "ru.ashabelskii.dossier.config"
+        "ru.ashabelskii.dossier.config",
+        "ru.ashabelskii.dossier.integration"
 })
 public class DossierApplication {
 

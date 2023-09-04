@@ -15,6 +15,7 @@
     <description>dossier</description>
     <properties>
         <java.version>17</java.version>
+        <logbook.version>2.16.0</logbook.version>
     </properties>
     <dependencies>
         <dependency>
@@ -24,6 +25,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring-boot-webflux-autoconfigure</artifactId>
+            <version>${logbook.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>

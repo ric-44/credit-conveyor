@@ -24,3 +24,11 @@ spring:
           starttls:
             enable: true
 
+integration:
+  deal:
+    client:
+      url: ${INTEGRATION_DEAL_CLIENT_URL}
+      connect-timeout: 300
+      read-timeout: 300
+      write-timeout: 300
+

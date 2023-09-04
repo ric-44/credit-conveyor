@@ -2,3 +2,8 @@ spring:
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
+
+integration:
+  deal:
+    client:
+      url: http://localhost:8011
