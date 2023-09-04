@@ -6,5 +6,5 @@ logging:
     org.springframework.cloud.gateway: DEBUG
 
 integration:
-  application-url: ${INTEGRATION_APPLICATION_URL}
-  deal-url: ${INTEGRATION_DEAL_URL}
+  application-url: http://localhost:8012
+  deal-url: http://localhost:8011
