@@ -16,6 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <springdoc.version>1.7.0</springdoc.version>
+        <logbook.version>2.16.0</logbook.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,6 +26,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring-boot-starter</artifactId>
+            <version>${logbook.version}</version>
         </dependency>
 
         <dependency>

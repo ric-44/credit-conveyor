@@ -1,5 +1,15 @@
 server:
   port: 8010
 
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
+logbook:
+  exclude:
+    - /actuator/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+
 app:
   base-rate: ${APP_BASERATE:18}
