@@ -45,6 +45,29 @@ services:
     networks:
       - bridged_network
 
+  grafana:
+    image: grafana/grafana:9.5.9
+    container_name: c-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - bridged_network
+  prometheus:
+    image: prom/prometheus:v2.46.0
+    ports:
+      - "9090:9090"
+    container_name: c-prometheus
+    volumes:
+      - ./.docker/prometheus:/prometheus
+      - ./deal/src/main/resources/prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - bridged_network
+
 networks:
   bridged_network:
     driver: bridge

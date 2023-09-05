@@ -7,6 +7,7 @@ import ru.ashabelskii.deal.db.entity.StatusHistory;
 import ru.ashabelskii.deal.db.enums.ApplicationStatus;
 import ru.ashabelskii.deal.db.enums.ChangeType;
 import ru.ashabelskii.deal.db.repository.ApplicationRepository;
+import ru.ashabelskii.deal.metric.MetricMonitoring;
 
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class ApplicationHelper {
         return applicationRepository.save(application);
     }
 
+    @MetricMonitoring
     public Application saveAndUpdateStatus(Application application, ApplicationStatus status, ChangeType changeType) {
         updateStatus(application, status, changeType);
         return applicationRepository.save(application);

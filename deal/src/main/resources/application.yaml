@@ -16,6 +16,16 @@ spring:
   liquibase:
     database-change-log-lock-table: DEAL_DATABASECHANGELOGLOCK
 
+management:
+  endpoints.web.exposure.include: health, info, prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
 logging:
   level:
     org.zalando.logbook: TRACE
