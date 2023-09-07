@@ -1,1 +1,13 @@
+spring:
+  application:
+    name: audit
+  redis:
+    host: ${AUDIT_DB_HOST}
+    port: ${AUDIT_DB_PORT}
+  kafka:
+    consumer:
+      bootstrap-servers: ${AUDIT_CONSUMER_BOOTSTRAPSERVERS}
+      group-id: ${AUDIT_CONSUMER:audit-consumer}
+      auto-offset-reset: earliest
+      isolation-level: read_committed
 

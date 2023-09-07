@@ -45,6 +45,17 @@ services:
     networks:
       - bridged_network
 
+  redis:
+    image: redis:7.2.0-alpine3.18
+    container_name: c-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.docker/redis:/var/lib/redis
+      - ./.docker/redis-config:/usr/local/etc/redis/redis.conf
+    networks:
+      - bridged_network
+
   grafana:
     image: grafana/grafana:9.5.9
     container_name: c-grafana
