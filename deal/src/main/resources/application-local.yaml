@@ -4,6 +4,9 @@ spring:
     password: postgres
     username: postgres
 
+audit:
+  bootstrap-servers: localhost:9092
+
 integration:
   conveyor:
     client:

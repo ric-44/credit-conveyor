@@ -36,6 +36,10 @@ logbook:
     - /swagger-ui/**
     - /v3/api-docs/**
 
+audit:
+  bootstrap-servers: ${AUDIT_BOOTSTRAPSERVERS}
+  topic: 'conveyor-audit'
+
 integration:
   conveyor:
     client:
