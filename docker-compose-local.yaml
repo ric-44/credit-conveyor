@@ -75,7 +75,7 @@ services:
     container_name: c-prometheus
     volumes:
       - ./.docker/prometheus:/prometheus
-      - ./deal/src/main/resources/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./deal/src/main/resources/prometheus-local.yaml:/etc/prometheus/prometheus.yml
     networks:
       - bridged_network
 

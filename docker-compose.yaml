@@ -1,0 +1,146 @@
+version: "3.9"
+
+services:
+  gateway:
+    build: gateway
+    container_name: f-gateway
+    ports:
+      - "8999:8999"
+    environment:
+      INTEGRATION_APPLICATION_URL: 'http://application:8012'
+      INTEGRATION_DEAL_URL: 'http://deal:8011'
+    networks:
+      - bridged_network
+  application:
+    build: application
+    container_name: f-application
+    environment:
+      INTEGRATION_DEAL_CLIENT_URL: 'http://deal:8011'
+    networks:
+      - bridged_network
+  conveyor:
+    build: conveyor
+    container_name: f-conveyor
+    networks:
+      - bridged_network
+  deal:
+    build: deal
+    container_name: f-deal
+    depends_on:
+      - database
+      - kafka
+    links:
+      - database
+    environment:
+      DB_URL: 'jdbc:postgresql://database:5432/deal'
+      DB_USERNAME: 'postgres'
+      DB_PASSWORD: 'postgres'
+      INTEGRATION_CONVEYOR_CLIENT_URL: 'http://conveyor:8010'
+      INTEGRATION_DOSSIER_BOOTSTRAPSERVERS: 'kafka:29092'
+      AUDIT_BOOTSTRAPSERVERS: 'kafka:29092'
+    networks:
+      - bridged_network
+  dossier:
+    build: dossier
+    container_name: f-dossier
+    environment:
+      DOSSIER_CONSUMER_BOOTSTRAPSERVERS: 'kafka:29092'
+      INTEGRATION_DEAL_CLIENT_URL: 'http://deal:8011'
+    env_file:
+      - secret.env
+    depends_on:
+      - kafka
+    networks:
+      - bridged_network
+  audit:
+    build: audit
+    container_name: f-audit
+    environment:
+      AUDIT_CONSUMER_BOOTSTRAPSERVERS: 'kafka:29092'
+      AUDIT_DB_PORT: '6379'
+      AUDIT_DB_HOST: 'redis'
+    depends_on:
+      - kafka
+      - redis
+    networks:
+      - bridged_network
+
+  database:
+    image: postgres:13.12-alpine3.18
+    container_name: f-database
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "deal"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ./.docker/postgres:/var/lib/postgresql/data
+    networks:
+      - bridged_network
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: f-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - bridged_network
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka
+    container_name: f-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - bridged_network
+  redis:
+    image: redis:7.2.0-alpine3.18
+    hostname: redis
+    container_name: f-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.docker/redis:/var/lib/redis
+      - ./.docker/redis-config:/usr/local/etc/redis/redis.conf
+    networks:
+      - bridged_network
+  grafana:
+    image: grafana/grafana:9.5.9
+    container_name: f-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - bridged_network
+  prometheus:
+    image: prom/prometheus:v2.46.0
+    ports:
+      - "9090:9090"
+    container_name: f-prometheus
+    volumes:
+      - ./.docker/prometheus:/prometheus
+      - ./deal/src/main/resources/prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - bridged_network
+
+networks:
+  bridged_network:
+    driver: bridge
