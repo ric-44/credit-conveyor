@@ -14,6 +14,10 @@ docker-compose --project-name credit-conveyor --file docker-compose.yaml up
 docker-compose --project-name credit-conveyor-local --file docker-compose-local.yaml up
 ```
 
+### Использование
+Для данного проекта на данный момент не разработан UI, но для управления можно использовать postman.
+Коллекция для postman (credit-conveyor\additionally\Кредитный конвейер.postman_collection.json)
+
 ## Мониторинг
 
 ### Микросервис Сделка (Deal)

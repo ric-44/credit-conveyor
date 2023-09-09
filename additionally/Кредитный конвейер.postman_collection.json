@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "b1119d26-3c77-415e-9c3b-0a795d76e987",
+		"name": "Кредитный конвейер",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15284022"
+	},
+	"item": [
+		{
+			"name": "Прескоринг и запрос на расчёт возможных условий кредита",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": 300000,\n  \"term\": 18,\n  \"firstName\": \"Алексей\",\n  \"lastName\": \"Иван\",\n  \"middleName\": \"Иванович\",\n  \"passportNumber\": \"564333\",\n  \"passportSeries\": \"4011\",\n  \"birthdate\": \"1992-05-24\",\n  \"email\": \"email@mail.ru\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/application",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Выбор одного из предложений",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"applicationId\": \"0c12e099-9e4a-4823-ad26-7fe8d07dbad2\",\n    \"requestedAmount\": 300000,\n    \"term\": 18,\n    \"monthlyPayment\": 18715.44,\n    \"rate\": 15,\n    \"totalAmount\": 336877.92,\n    \"isSalaryClient\": true,\n    \"isInsuranceEnabled\": true\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/application/offer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"application",
+						"offer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Завершение регистрации + Полный расчет параметров кредита",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dependentAmount\": 1,\n    \"gender\": \"MALE\",\n    \"passportIssueDate\": \"2006-06-21\",\n    \"passportIssueBranch\": \"ТП №43 отдела УФМС России по Санкт-Петербургу и Ленинградской области\",\n    \"employment\": {\n        \"employmentStatus\": \"EMPLOYED\",\n        \"employerINN\": \"784821858948\",\n        \"salary\": 90000,\n        \"position\": \"WORKER\",\n        \"workExperienceTotal\": 15,\n        \"workExperienceCurrent\": 15\n    },\n    \"maritalStatus\": \"SINGLE\",\n    \"account\": \"A8902312381239\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/deal/calculate/:applicationId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"deal",
+						"calculate",
+						":applicationId"
+					],
+					"variable": [
+						{
+							"key": "applicationId",
+							"value": "0c12e099-9e4a-4823-ad26-7fe8d07dbad2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запрос на отправку документов",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/deal/document/:applicationId/send",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"deal",
+						"document",
+						":applicationId",
+						"send"
+					],
+					"variable": [
+						{
+							"key": "applicationId",
+							"value": "0c12e099-9e4a-4823-ad26-7fe8d07dbad2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Запрос на подписание документов",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/deal/document/:applicationId/sign",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"deal",
+						"document",
+						":applicationId",
+						"sign"
+					],
+					"variable": [
+						{
+							"key": "applicationId",
+							"value": "0c12e099-9e4a-4823-ad26-7fe8d07dbad2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Подписание документов",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "1790",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/deal/document/:applicationId/code",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"deal",
+						"document",
+						":applicationId",
+						"code"
+					],
+					"variable": [
+						{
+							"key": "applicationId",
+							"value": "0c12e099-9e4a-4823-ad26-7fe8d07dbad2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8999",
+			"type": "string"
+		}
+	]
+}
