@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import ru.ashabelskii.deal.audit.config.AuditConfig;
 import ru.ashabelskii.deal.audit.model.AuditMessage;
 
-import java.util.concurrent.CompletableFuture;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -17,7 +15,6 @@ public class AuditLogger {
     private final AuditConfig auditConfig;
 
     public void sendEventAsync(AuditMessage auditMessage) {
-        CompletableFuture.runAsync(
-                () -> auditKafkaTemplate.send(auditConfig.getTopic(), auditMessage.id().toString(), auditMessage));
+        auditKafkaTemplate.send(auditConfig.getTopic(), auditMessage.id().toString(), auditMessage);
     }
 }
