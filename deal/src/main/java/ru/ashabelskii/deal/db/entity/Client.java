@@ -34,9 +34,9 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private Marital maritalStatus;
     private Integer dependentAmount;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Passport passport;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Employment employment;
     @Column(name = "account_number")
     private String account;

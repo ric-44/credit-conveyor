@@ -3,6 +3,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/deal
     password: postgres
     username: postgres
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 audit:
   bootstrap-servers: localhost:9092
@@ -13,3 +18,8 @@ integration:
       url: http://localhost:8010
   dossier:
     bootstrap-servers: localhost:9092
+
+logging:
+  level:
+    org.springframework.transaction: TRACE
+    org.springframework.transaction.support: TRACE
